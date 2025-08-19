@@ -1,18 +1,18 @@
 [
   {
-    "id": "1",
-    "city": "New York",
-    "temperature": 22,
-    "condition": "Sunny",
-    "recordedAt": "2023-10-01T12:00:00Z",
-    "updatedAt": "2023-10-01T12:00:00"
+    "id": "BKTIB",
+    "city": "chennai",
+    "temperature": 35,
+    "condition": "Hot",
+    "recordedAt": "2025-08-19T05:13:01.274Z",
+    "updatedAt": "2025-08-19T05:13:01.276Z"
   },
   {
-    "id": "b8aac90c-3ad4-476a-b440-38131e18b130",
+    "id": "to2pG",
     "city": "Delhi",
-    "temperature": 22,
-    "condition": "Rainy",
-    "recordedAt": "2025-08-19T04:13:11.710Z",
-    "updatedAt": "2025-08-19T04:13:11.710Z"
+    "temperature": 42,
+    "condition": "Extrem Hot",
+    "recordedAt": "2025-08-20T08:59:45.696Z",
+    "updatedAt": "2025-08-20T08:59:45.696Z"
   }
 ]

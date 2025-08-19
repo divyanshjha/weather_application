@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+import { nanoid } from "nanoid";
 import { Weather } from "../models/weatherModels";
 import { readData, writeData } from "../utils/filehandler";
 
@@ -14,7 +15,7 @@ router.post("/", (req: Request, res: Response) => {
 
     const records = readData();
     const newRecord: Weather = {
-        id: uuidv4(),
+        id: nanoid(5),
         city,
         temperature,
         condition,
@@ -36,7 +37,8 @@ router.put("/:id", (req: Request, res: Response) => {
     const records = readData();
     const record = records.find(r => r.id === id);
 
-    if (!record) return res.status(404).json({ error: "Record not found" });
+    if (!record)
+        return res.status(404).json({ error: "Record not found" });
 
     if (temperature !== undefined)
         record.temperature = temperature;
@@ -82,9 +84,13 @@ router.get("/city/:cityName", (req: Request, res: Response) => {
     if (from || to) {
         records = records.filter(r => {
             const recordedAt = new Date(r.recordedAt).getTime();
-            const fromTime = from ? new Date(from as string).getTime() : -Infinity;
-            const toTime = to ? new Date(to as string).getTime() : Infinity;
-            return recordedAt >= fromTime && recordedAt <= toTime;
+            if (from && recordedAt < new Date(from as string).getTime()) {
+                return false;
+            }
+            if (to && recordedAt > new Date(to as string).getTime()) {
+                return false;
+            }
+            return true;
         });
     }
 
