@@ -6,13 +6,5 @@
     "condition": "Hot",
     "recordedAt": "2025-08-19T05:13:01.274Z",
     "updatedAt": "2025-08-19T05:13:01.276Z"
-  },
-  {
-    "id": "to2pG",
-    "city": "Delhi",
-    "temperature": 42,
-    "condition": "Extrem Hot",
-    "recordedAt": "2025-08-20T08:59:45.696Z",
-    "updatedAt": "2025-08-20T08:59:45.696Z"
   }
 ]
