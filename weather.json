@@ -6,5 +6,13 @@
     "condition": "Hot",
     "recordedAt": "2025-08-19T05:13:01.274Z",
     "updatedAt": "2025-08-19T05:13:01.276Z"
+  },
+  {
+    "id": "cyMM1",
+    "city": "Pune",
+    "temperature": 28,
+    "condition": "Extreme Rain",
+    "recordedAt": "2025-08-21T09:13:51.554Z",
+    "updatedAt": "2025-08-21T09:13:51.555Z"
   }
 ]

@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Weather } from "../models/weatherModels";
 import { readData, writeData } from "../utils/commonFunction";
+import { weatherSchema, updateWeatherSchema } from "../schema/weatherSchema";
+
 
 //Get All Weather Records
 export const getWeatherHandler = (_req: Request, res: Response) => {
@@ -12,11 +14,15 @@ export const getWeatherHandler = (_req: Request, res: Response) => {
 
 //Add Weather Record
 export const addWeatherHandler = (req: Request, res: Response) => {
-    const { city, temperature, condition } = req.body;
-    if (!city || typeof temperature !== "number" || !condition) {
-        return res.status(400).json({ error: "Invalid input" });
+
+    const parseResult = weatherSchema.safeParse(req.body);
+
+    if (!parseResult.success) {
+        return res.status(400).json({ errors: parseResult.error.message });
     }
 
+
+    const { city, temperature, condition } = parseResult.data;
     const records = readData();
     const newRecord: Weather = {
         id: nanoid(5),
@@ -36,11 +42,16 @@ export const addWeatherHandler = (req: Request, res: Response) => {
 //Update Weather Record
 export const updateWeatherHandler = (req: Request, res: Response) => {
     const { id } = req.params;
-    const { temperature, condition } = req.body;
+    const parseResult = updateWeatherSchema.safeParse(req.body);
+
+    if (!parseResult.success) {
+        return res.status(400).json({ errors: parseResult.error.message });
+    }
 
     const records = readData();
     const record = records.find((r) => r.id === id);
 
+    const { temperature, condition } = parseResult.data;
     if (!record) return res.status(404).json({ error: "Record not found" });
 
     if (temperature !== undefined) record.temperature = temperature;
