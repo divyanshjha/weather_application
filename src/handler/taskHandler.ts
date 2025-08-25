@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { Weather } from "../models/weatherModels";
 import { readData, writeData } from "../utils/commonFunction";
-import { weatherSchema, updateWeatherSchema } from "../schema/weatherSchema";
+import { weatherSchema, updateWeatherSchema, dateQuerySchema } from "../schema/weatherSchema";
 
 
 //Get All Weather Records
@@ -42,6 +42,7 @@ export const addWeatherHandler = (req: Request, res: Response) => {
 //Update Weather Record
 export const updateWeatherHandler = (req: Request, res: Response) => {
     const { id } = req.params;
+
     const parseResult = updateWeatherSchema.safeParse(req.body);
 
     if (!parseResult.success) {
@@ -81,7 +82,13 @@ export const deleteWeatherHandler = (req: Request, res: Response) => {
 //Get Records for a City
 export const getCityWeatherHandler = (req: Request, res: Response) => {
     const { cityName } = req.params;
-    const { from, to } = req.query;
+
+
+    const praseRes = dateQuerySchema.safeParse(req.query);
+    if (!praseRes.success) {
+        return res.status(400).json({ errors: praseRes.error.message });
+    }
+    const { from, to } = praseRes.data;
 
     let records = readData().filter(
         (r) => r.city.toLowerCase() === cityName.toLowerCase()
@@ -90,11 +97,15 @@ export const getCityWeatherHandler = (req: Request, res: Response) => {
     if (from || to) {
         records = records.filter((r) => {
             const recordedAt = new Date(r.recordedAt).getTime();
-            if (from && recordedAt < new Date(from as string).getTime()) {
-                return false;
+            if (from) {
+                const fromDate = new Date(from as string).getTime();
+                if (isNaN(fromDate))
+                    return false;
             }
-            if (to && recordedAt > new Date(to as string).getTime()) {
-                return false;
+            if (to) {
+                const toDate = new Date(to as string).getTime();
+                if (isNaN(toDate) || recordedAt > toDate)
+                    return false;
             }
             return true;
         });

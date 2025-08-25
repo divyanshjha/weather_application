@@ -33,6 +33,22 @@ export const updateWeatherSchema = z.object({
         }),
 });
 
+export const dateQuerySchema = z.object({
+    from: z
+        .string()
+        .optional()
+        .refine((val) => !val || !isNaN(Date.parse(val)), {
+            message: "Invalid 'from' date format",
+        }),
+    to: z
+        .string()
+        .optional()
+        .refine((val) => !val || !isNaN(Date.parse(val)), {
+            message: "Invalid 'to' date format",
+        }),
+});
+
 // Types
 export type WeatherInput = z.infer<typeof weatherSchema>;
 export type UpdateWeatherInput = z.infer<typeof updateWeatherSchema>;
+export type DateQueryInput = z.infer<typeof dateQuerySchema>;
